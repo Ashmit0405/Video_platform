@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import { asyncHandler } from "../utils/asyncfunction";
-import { Video } from "../models/video.model";
-import { ApiError } from "../utils/apiError";
-import { Comment } from "../models/comment.model";
-import { ApiResponse } from "../utils/apiResponse";
-import { Like } from "../models/like.model";
+import { asyncHandler } from "../utils/asyncfunction.js";
+import { Video } from "../models/video.model.js";
+import { ApiError } from "../utils/apiError.js";
+import { Comment } from "../models/comment.model.js";
+import { ApiResponse } from "../utils/apiResponse.js";
+import { Like } from "../models/like.model.js";
 
 const getcomments=asyncHandler(async (req,res)=>{
     const {videoId}=req.params;
