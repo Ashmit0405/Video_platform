@@ -60,3 +60,28 @@ const updateplaylist=asyncHandler(async(req,res)=>{
     return res.status(200).json(new ApiResponse(200,upplaylist,"Playlist updated successfully"));
 
 })
+
+const deleteplaylist=asyncHandler(async(req,res)=>{
+    const {p_id}=req.params;
+    if(!isValidObjectId(p_id)){
+        throw new ApiError(500,"Playlist Not Found");
+    }
+    
+    const playlist=Playlist.findById(p_id);
+    if(!playlist){
+        throw new ApiError(404,"Playlist Not found");
+    }
+    if(playlist.owner.toString()!==req.user?._id.toString()){
+        throw new ApiError(500,"Only creator of the playlist can make changes");
+    }
+    const response=await Playlist.findByIdAndDelete(p_id);
+    if(!response){
+        throw new ApiError(500,"Error deleting playlist");
+    }
+
+    return res.status(200).json(new ApiResponse(200,response,"Playlist Deleted Successfully"));
+});
+
+const addvideo=asyncHandler(async(req,res)=>{
+    
+})
