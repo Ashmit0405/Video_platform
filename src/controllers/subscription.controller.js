@@ -18,7 +18,7 @@ const togglesubscription=asyncHandler(async(req,res)=>{
 
     if(issubsribed){
         await Subscription.findByIdAndDelete(issubsribed?._id);
-        return res.status(200).json(200,{subcribed: false},"Unsubscribed Successfully");
+        return res.status(200).json(new ApiResponse(200,{subcribed: false},"Unsubscribed Successfully"));
     }
 
     await Subscription.create({
@@ -26,7 +26,7 @@ const togglesubscription=asyncHandler(async(req,res)=>{
         channel: channelid,
     })
 
-    return res.status(200).json(200,{subscribed:true},"Subscribed Successfully");
+    return res.status(200).json(new ApiResponse(200,{subscribed:true},"Subscribed Successfully"));
 })
 
 const getchannelsubs=asyncHandler(async(req,res)=>{
@@ -99,7 +99,7 @@ const getchannelsubs=asyncHandler(async(req,res)=>{
         }
     ]);
 
-    return res.status(200).json(200,subs,"Subscribers Fetched Successfully");
+    return res.status(200).json(new ApiResponse(200,subs,"Subscribers Fetched Successfully"));
 });
 
 const getchannels=asyncHandler(async(req,res)=>{
