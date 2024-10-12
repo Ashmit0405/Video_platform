@@ -2,6 +2,7 @@ import mongoose,{isValidObjectId} from "mongoose";
 import { asyncHandler } from "../utils/asyncfunction.js";
 import { ApiError } from "../utils/apiError.js";
 import {Subscription} from "../models/subscription.model.js"
+import { ApiResponse } from "../utils/apiResponse.js";
 
 
 const togglesubscription=asyncHandler(async(req,res)=>{
@@ -108,8 +109,59 @@ const getchannels=asyncHandler(async(req,res)=>{
         {
             $match:{
                 subscriber: new mongoose.Types.ObjectId(subid),
+            },
+        },
+        {
+            $lookup:{
+                from: "users",
+                localField: "channel",
+                foreignField: "_id",
+                as: "subscribed_channel",
+                pipeline:[
+                    {
+                        $lookup:{
+                            from: "videos",
+                            localField: "_id",
+                            foreignField: "owner",
+                            as: "videos"
+                        },
+                    },
+                    {
+                        $addFields:{
+                            latestvideo:{
+                                $last: "$videos",
+                            },
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            $unwind: "$subscribedchannel",
+        },
+        {
+            $project:{
+                _id: 0,
+                subscribedChannel: {
+                    _id: 1,
+                    username: 1,
+                    fullName: 1,
+                    "avatar.url": 1,
+                    latestVideo: {
+                        _id: 1,
+                        "videoFile.url": 1,
+                        "thumbnail.url": 1,
+                        owner: 1,
+                        title: 1,
+                        description: 1,
+                        duration: 1,
+                        createdAt: 1,
+                        views: 1
+                    },
+                },
             }
         },
-        
-    ])
+    ]);
+
+    return res.status(200).json(new ApiResponse(200,subbedchannels,"Channels fetched successfully"));
 })
