@@ -28,7 +28,7 @@ const createplaylist=asyncHandler(async(req,res)=>{
 
 const updateplaylist=asyncHandler(async(req,res)=>{
     const {name,description}=req.body;
-    const {p_id}=req.params;
+    const {playlistid}=req.params;
     
     if(!name||!description){
         throw new ApiError(500,"Name and Description required");
@@ -63,7 +63,7 @@ const updateplaylist=asyncHandler(async(req,res)=>{
 })
 
 const deleteplaylist=asyncHandler(async(req,res)=>{
-    const {p_id}=req.params;
+    const {playlistid}=req.params;
     if(!isValidObjectId(p_id)){
         throw new ApiError(500,"Playlist Not Found");
     }
