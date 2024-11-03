@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { addComment, deletecomment, editcomment, getcomments } from "../controllers/comment.controller";
-import { verifyJWT } from "../middlewares/auth.middleware";
+import { addComment, deletecomment, editcomment, getcomments } from "../controllers/comment.controller.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router=Router();
 router.route("/:videoid").get(verifyJWT,getcomments).post(verifyJWT,addComment);
